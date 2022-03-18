@@ -1,0 +1,24 @@
+{
+  "name": "lendsqr_bank",
+  "version": "1.0.0",
+  "description": "Lendsqr Assessment",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "debug": "^4.3.3",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "knex": "^1.0.4",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.3",
+    "rotating-file-stream": "^3.0.3"
+  }
+}
