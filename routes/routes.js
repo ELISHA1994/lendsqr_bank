@@ -24,7 +24,7 @@ router.post('/account', async (req, res, next) => {
 });
 
 // A user can fund their account
-router.post("/fund", async (req, res, next) => {
+router.post("/fund", ensureAuthenticated, async (req, res, next) => {
     try {
         const db = req.app.get("db");
         const {account, amount} = req.body;
@@ -41,7 +41,7 @@ router.post("/fund", async (req, res, next) => {
 })
 
 // A user can transfer funds to another user’s account
-router.post("/transfer", async (req, res) => {
+router.post("/transfer", ensureAuthenticated, async (req, res) => {
     const db = req.app.get("db");
     const transactionProvider = db.transactionProvider();
     const transaction = await transactionProvider();
@@ -70,7 +70,8 @@ router.post("/transfer", async (req, res) => {
 })
 
 // A user can withdraw funds from their account.
-router.post("/withdraw", async (req, res) => {
+// '7142028821', '450'
+router.post("/withdraw", ensureAuthenticated, async (req, res) => {
     const db = req.app.get("db");
     try {
         const response = await withdrawFund(db, req.body);
@@ -84,4 +85,38 @@ router.post("/withdraw", async (req, res) => {
         })
     }
 })
+
+async function ensureAuthenticated(req, res, next) {
+    const db = req.app.get("db");
+    try {
+        if (!req.headers.authorization) {
+            return res.status(401).json({
+                status: 'error',
+                data: {message: "You have to login"}
+            });
+        }
+        const token = req.headers.authorization.split(' ')[1];
+        const user = await db
+            .from("accounts")
+            .select("*")
+            .where("id", token)
+            .first()
+        console.log(user);
+        // check for valid app users
+        if (!user) {
+            return res.status(401).json({
+                status: 'error',
+                data: { message: "Invalid token provided" }
+            })
+        }
+        next()
+        // return next();
+    } catch (err) {
+        return res.status(400).json({
+            status: 'error',
+            data: {message: err.message}
+        })
+    }
+}
+
 export default router;
