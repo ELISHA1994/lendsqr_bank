@@ -46,17 +46,14 @@ export function onListening() {
     debug(`Listening on ${bind}`)
 }
 
-export function generateAccountNumber(pCount, pMin, pMax) {
-    let min = pMin < pMax ? pMin : pMax;
-    let max = pMax > pMin ? pMax : pMin;
-    let resultArr = [], randNumber;
-    while ( pCount > 0) {
-        randNumber = Math.round(min + Math.random() * (max - min));
-        if (resultArr.indexOf(randNumber) === -1) {
-            resultArr.push(randNumber);
-            pCount--;
-        }
-    }
+export function handle404(req, res) {
+    res.status(404).json({ error: 'Not found' });
+}
 
-    return resultArr.join('');
+export function basicErrorHandler(err, req, res, next) {
+    console.error("Error", err);
+    res.status(500).json({
+        message: err.message,
+        body:{}
+    });
 }

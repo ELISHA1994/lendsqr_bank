@@ -12,7 +12,7 @@ import Knexfile from "./db/knexfile.js";
 
 import { approotdir } from "./approotdir.js";
 import bankRoutes from "./routes/routes.js";
-import {normalizePort, onError, onListening} from "./utils/utils.js";
+import {basicErrorHandler, handle404, normalizePort, onError, onListening} from "./utils/utils.js";
 
 // Global variables
 const __dirname = approotdir;
@@ -45,6 +45,10 @@ const db = knex(Knexfile[process.env.NODE_ENV]);
 app.set("db", db);
 
 app.use('/api', bankRoutes);
+
+// Error handling
+app.use(handle404)
+app.use(basicErrorHandler)
 
 export const server = http.createServer(app);
 server.listen(port);
