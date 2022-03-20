@@ -5,9 +5,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "cross-env DEBUG=server:* node --experimental-modules --es-module-specifier-resolution=node  --trace-warnings ./server.js",
+    "start": "cross-env DEBUG=server:* NODE_ENV=development node --experimental-modules --es-module-specifier-resolution=node  --trace-warnings ./server.js",
     "migrate": "knex migrate:latest --knexfile db/knexfile.js",
-    "seed": "knex seed:run --knexfile db/knexfile.js",
+    "seed": "knex seed:run --knexfile db/knexfile.js"
   },
   "keywords": [],
   "author": "",

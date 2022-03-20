@@ -7,13 +7,16 @@ import {default as logger} from "morgan";
 import { createStream } from "rotating-file-stream";
 import { default as DBG } from 'debug';
 
+import knex from "knex";
+import Knexfile from "./db/knexfile.js";
+
 import { approotdir } from "./approotdir.js";
+import bankRoutes from "./routes/routes.js";
 import {normalizePort, onError, onListening} from "./utils/utils.js";
 
 // Global variables
 const __dirname = approotdir;
 const debug = DBG('server:debug');
-const dbgerror = DBG('server:error');
 
 // Initialize the express app object
 const app = express();
@@ -36,6 +39,12 @@ app.use(logger(process.env.REQUEST_LOG_FORMAT || 'common', {
         })
         : process.stdout
 }));
+
+// Database setup
+const db = knex(Knexfile[process.env.NODE_ENV]);
+app.set("db", db);
+
+app.use('/api', bankRoutes);
 
 export const server = http.createServer(app);
 server.listen(port);
