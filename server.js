@@ -44,11 +44,15 @@ app.use(logger(process.env.REQUEST_LOG_FORMAT || 'common', {
 const db = knex(Knexfile[process.env.NODE_ENV]);
 app.set("db", db);
 
+app.get('/', function (req, res) {
+    res.status(200).json({ "message": "server is up and running" });
+})
+
 app.use('/api', bankRoutes);
 
 // Error handling
-app.use(handle404)
-app.use(basicErrorHandler)
+app.use(handle404);
+app.use(basicErrorHandler);
 
 export const server = http.createServer(app);
 server.listen(port);

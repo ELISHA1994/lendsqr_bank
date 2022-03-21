@@ -3,10 +3,6 @@ export async function createAccount(db, accountDetails) {
     return db
         .insert(accountDetails)
         .into("accounts")
-        .returning("*")
-        .then((rows) => {
-            return rows[0];
-        });
 }
 
 export async function getAccount(db, id) {

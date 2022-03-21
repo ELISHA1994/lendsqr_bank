@@ -1,9 +1,9 @@
 /**
  * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
+ * @returns {Promise<Knex.SchemaBuilder>}
  */
 export async function up(knex) {
-    await knex.schema
+    return  knex.schema
         .dropTableIfExists('accounts')
         .createTable('accounts', (table) => {
             table.uuid('id').notNullable().primary()
@@ -13,8 +13,8 @@ export async function up(knex) {
 
 /**
  * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
+ * @returns {Promise<Knex.SchemaBuilder>}
  */
 export async function down(knex) {
-    await knex.schema.dropTable('accounts')
+    return  knex.schema.dropTable('accounts')
 }

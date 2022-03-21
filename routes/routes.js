@@ -4,6 +4,40 @@ import {createAccount, fundAccount, getAccount, transferFunds, withdrawFund} fro
 
 const router = express.Router();
 
+// Test
+router.get('/beforeAll', async (req, res) => {
+    try {
+        const db = req.app.get("db");
+
+        await db.migrate.rollback();
+        await db.migrate.latest();
+        console.log("beforeAll")
+
+        await db.seed.run()
+        console.log("beforeAll seed")
+        res.status(200).json({
+            message: "Database migrated and seeded"
+        })
+    } catch (err) {
+        console.error(err);
+        throw new Error(err);
+    }
+});
+
+
+router.get('afterAll', async (req, res) => {
+    console.log("afterAll")
+    const db = req.app.get("db");
+    try {
+        await db.migrate.rollback();
+        res.status(200).json({message: "Done"});
+    } catch (err) {
+        console.error(err);
+        throw new Error(err);
+    }
+})
+
+
 // A user can create an account
 router.post('/account', async (req, res, next) => {
     try {
@@ -104,6 +138,7 @@ async function ensureAuthenticated(req, res, next) {
         console.log(user);
         // check for valid app users
         if (!user) {
+            console.log("ensureAuthenticated")
             return res.status(401).json({
                 status: 'error',
                 data: { message: "Invalid token provided" }

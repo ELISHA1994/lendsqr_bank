@@ -1,24 +1,22 @@
-import generateUniqueId from "generate-unique-id";
+// import generateUniqueId from "generate-unique-id";
 
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
 export async function seed (knex) {
   // Deletes ALL existing entries
-  await knex('accounts').del()
-  await knex('accounts').insert([
-    {
-      id: generateUniqueId({length: 10, useLetters: false}),
-      balance: 1000,
-    },
-    {
-      id: generateUniqueId({length: 10, useLetters: false}),
-      balance: 250,
-    },
-    {
-      id: generateUniqueId({length: 10, useLetters: false}),
-      balance: 0,
-    }
-  ]);
-};
+  return  knex('accounts').del()
+      .then(function () {
+        return knex('accounts').insert([
+          {
+            id: '2072723561',
+            balance: 1000,
+          },
+          {
+            id: '2644215508',
+            balance: 250,
+          },
+          {
+            id: '2037891297',
+            balance: 0,
+          }
+        ]);
+      })
+}

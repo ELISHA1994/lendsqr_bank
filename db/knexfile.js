@@ -21,6 +21,25 @@ export default {
     },
   },
 
+  test: {
+    client: 'mysql2',
+    debug: false,
+    connection: {
+      host : "localhost",
+      port : "3306",
+      user : "root",
+      password : "T&hE9mDM",
+      database : "lendsqr_bank_test2"
+    },
+    migrations: {
+      directory: "migrations",
+    },
+    seeds: {
+      directory: "seeds",
+    },
+    useNullAsDefault: true,
+  },
+
   production: {
     client: 'postgresql',
     connection: {

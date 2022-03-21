@@ -6,8 +6,10 @@
   "type": "module",
   "scripts": {
     "start": "cross-env DEBUG=server:* NODE_ENV=development node --experimental-modules --es-module-specifier-resolution=node  --trace-warnings ./server.js",
+    "test:setup": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --coverage --watch --testTimeout=10000 --detectOpenHandles",
     "migrate": "knex migrate:latest --knexfile db/knexfile.js",
-    "seed": "knex seed:run --knexfile db/knexfile.js"
+    "seed": "knex seed:run --knexfile db/knexfile.js",
+    "test": "NODE_ENV=test npm run migrate && NODE_ENV=test npm run seed --esm && npm run test:setup"
   },
   "keywords": [],
   "author": "",
@@ -25,5 +27,9 @@
     "rotating-file-stream": "^3.0.3",
     "unique-random": "^3.0.0",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "supertest": "^6.2.2"
   }
 }
